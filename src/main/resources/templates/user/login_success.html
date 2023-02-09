@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>尚硅谷会员注册页面</title>
+	<div th:include="~{common :: header}"></div>
+<style type="text/css">
+	h1 {
+		text-align: center;
+		margin-top: 200px;
+	}
+	
+	h1 a {
+		color:red;
+	}
+</style>
+</head>
+<body>
+	<div th:replace="~{common :: #header}"></div>
+		
+	<div id="main">
+
+		<h1>欢迎回来 <a th:href="@{/}">转到主页</a></h1>
+
+	</div>
+
+	<div th:replace="~{common :: #bottom}"></div>
+</body>
+</html>

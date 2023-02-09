@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>订单详情</title>
+    <div th:include="~{common :: header}"></div>
+</head>
+<body>
+    <div id="header">
+        <img class="logo_img" alt="" th:src="@{/img/logo.gif}" >
+        <span class="wel_word">订单详情</span>
+
+        <div>
+            <span style="font-size: 25px">订单号:[[${orderId}]]</span>
+            <a th:if="${user == 'user'}" th:href="@{/order}">返回</a>
+            <a th:if="${user == 'manager'}" th:href="@{/manager/order}">返回</a>
+        </div>
+    </div>
+
+    <div id="main">
+        <table>
+            <tr>
+                <td>商品名称</td>
+                <td>数量</td>
+                <td>单价</td>
+                <td>金额</td>
+            </tr>
+            <tr th:each="orderItem : ${orderItems}" th:object="${orderItem}">
+                <td th:text="*{name}"></td>
+                <td th:text="*{count}"></td>
+                <td th:text="*{price}"></td>
+                <td th:text="*{totalMoney}"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div th:replace="~{common::#bottom}"></div>
+</body>
+</html>

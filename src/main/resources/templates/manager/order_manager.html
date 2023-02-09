@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>订单管理</title>
+	<div th:include="~{common :: header}"></div>
+	<script type="text/javascript">
+
+		$(function () {
+			$(".send").click(function () {
+				return confirm("确定要发货吗?");
+			})
+		})
+
+	</script>
+</head>
+<body>
+
+	<div id="header">
+		<img class="logo_img" alt="" th:src="@{/img/logo.gif}" >
+		<span class="wel_word">订单管理系统</span>
+		<div th:replace="~{common :: #manager_header}"></div>
+	</div>
+	
+	<div id="main">
+		<table>
+			<tr>
+				<td>日期</td>
+				<td>金额</td>
+				<td>详情</td>
+				<td>发货</td>
+				
+			</tr>
+			<tr th:if="${orders == null}">
+				<td colspan="4">还没有订单</td>
+			</tr>
+			<tr th:if="${orders != null}" th:each="order : ${orders}" th:object="${order}">
+				<td th:text="*{createTime}">2015.04.23</td>
+				<td th:text="*{totalMoney}">90.00</td>
+				<td><a th:href="@{|/order/detail/manager/*{orderId}|}">查看详情</a></td>
+				<td th:if="*{status == 0}">
+					未发货<br/>
+					<a class="send" th:href="@{|/update/status/1/*{orderId}|}">点击发货</a>
+				</td>
+				<td th:if="*{status == 1}">已发货</td>
+				<td th:if="*{status == 2}">已完成</td>
+			</tr>
+		</table>
+	</div>
+
+	<div th:replace="~{common::#bottom}"></div>
+</body>
+</html>

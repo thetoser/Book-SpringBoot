@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/book?useSSL=false
+    username:
+    password:
+  main:
+    # 循环依赖
+    allow-circular-references: true
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.zhljava.bookspringboot.pojo
+
+pagehelper:
+  helper-dialect: mysql
+  # 分页参数合理化
+  # 默认是false。
+  # 启用合理化时，如果pageNum<1会查询第一页，如果pageNum>pages会查询最后一页；
+  # 禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据
+  reasonable: true

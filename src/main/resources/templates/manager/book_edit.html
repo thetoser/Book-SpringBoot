@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>编辑图书</title>
+	<div th:include="~{common :: header}"></div>
+<style type="text/css">
+	h1 {
+		text-align: center;
+		margin-top: 200px;
+	}
+	
+	h1 a {
+		color:red;
+	}
+	
+	input {
+		text-align: center;
+	}
+</style>
+</head>
+<body>
+	<div id="header">
+		<img class="logo_img" alt="" th:src="@{/img/logo.gif}" >
+		<span class="wel_word">编辑图书</span>
+		<div th:replace="~{common :: #manager_header}"></div>
+	</div>
+		
+	<div id="main">
+		<form th:action="@{/book/edit}">
+			<input th:if="${book != null}" type="hidden" name="id" th:value="${book.id}">
+			<input type="hidden" name="pageNum" th:value="${session.page.pageNum}">
+			<input type="hidden" name="pages" th:value="${session.page.pages}">
+			<table>
+				<tr>
+					<td>名称</td>
+					<td>价格</td>
+					<td>作者</td>
+					<td>销量</td>
+					<td>库存</td>
+					<td colspan="2">操作</td>
+				</tr>
+				<tr th:if="${book == null}">
+					<td><input name="name" type="text"/></td>
+					<td><input name="price" type="text"/></td>
+					<td><input name="author" type="text"/></td>
+					<td><input name="sales" type="text"/></td>
+					<td><input name="stock" type="text"/></td>
+					<td><input type="submit" value="提交"/></td>
+				</tr>
+				<tr th:if="${book != null}" th:object="${book}">
+					<td><input name="name" type="text" th:value="*{name}"/></td>
+					<td><input name="price" type="text" th:value="*{price}"/></td>
+					<td><input name="author" type="text" th:value="*{author}"/></td>
+					<td><input name="sales" type="text" th:value="*{sales}"/></td>
+					<td><input name="stock" type="text" th:value="*{stock}"/></td>
+					<td><input type="submit" value="提交"/></td>
+				</tr>
+			</table>
+		</form>
+
+	</div>
+
+	<div th:replace="~{common::#bottom}"></div>
+</body>
+</html>

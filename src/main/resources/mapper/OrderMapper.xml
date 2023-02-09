@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhljava.bookspringboot.mapper.OrderMapper">
+
+    <!--List<Order> selectOrderByUserId(@Param("userId") Integer userId); -->
+    <select id="selectOrderByUserId" resultType="Order">
+        select `order_id`, `create_time`, `total_money`, `status`, `user_id`
+        from t_order
+        where `user_id` = #{userId}
+        order by `create_time` desc
+    </select>
+
+    <!--List<Order> selectOrder();-->
+    <select id="selectOrder" resultType="Order">
+        select `order_id`, `create_time`, `total_money`, `status`, `user_id`
+        from t_order
+        order by `create_time` desc
+    </select>
+
+    <!--List<OrderItem> selectOrderByOrderId(@Param("orderId") String orderId);-->
+    <select id="selectOrderItemByOrderId" resultType="OrderItem">
+        select `id`, `name`, `count`, `price`, `total_money`, `order_id`
+        from t_order_item
+        where `order_id` = #{orderId}
+    </select>
+
+    <!--void updateStatus(@Param("orderId") String orderId, @Param("status") Integer status);-->
+    <update id="updateStatus">
+        update t_order
+        set `status` = #{status}
+        where `order_id` = #{orderId}
+    </update>
+
+    <!--void insertOrder(@Param("order") Order order);-->
+    <insert id="insertOrder">
+        insert into t_order(`order_id`, `create_time` , `total_money`, `status` , `user_id`)
+        values (#{order.orderId}, #{order.createTime}, #{order.totalMoney}, #{order.status}, #{order.userId})
+    </insert>
+
+    <!--void insertOrderItem(@Param("orderItem") OrderItem orderItem);-->
+    <insert id="insertOrderItem">
+        insert into t_order_item(`id`, `name`, `count`, `price`, `total_money`, `order_id`)
+        values (null, #{orderItem.name}, #{orderItem.count},
+                #{orderItem.price}, #{orderItem.totalMoney}, #{orderItem.orderId})
+    </insert>
+
+</mapper>

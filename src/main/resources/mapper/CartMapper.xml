@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhljava.bookspringboot.mapper.CartMapper">
+
+    <!--Integer selectCartId(@Param("userId") Integer userId);-->
+    <select id="selectCartId" resultType="int">
+        select `id`
+        from t_cart
+        where `user_id` = #{userId}
+    </select>
+
+    <!--List<CartItem> selectCartItemsById(@Param("cartId") Integer cartId);-->
+    <select id="selectCartItemsById" resultType="CartItem">
+        select `id`, `name`, `count`, `price`, `total_price`, `cart_id`, `book_id`
+        from t_cart_item
+        where `cart_id` = #{cartId}
+    </select>
+
+    <!--void insertCartItem(@Param("cartItem") CartItem cartItem);-->
+    <insert id="insertCartItem">
+    insert into t_cart_item(`id`, `name`, `count`, `price`, `total_price`, `cart_id`, `book_id`)
+        values (null, #{cartItem.name}, #{cartItem.count},#{cartItem.price},
+                #{cartItem.totalPrice},#{cartItem.cartId}, #{cartItem.bookId})
+    </insert>
+
+    <!--void insertCart(@Param("userId") Integer userId);-->
+    <insert id="insertCart">
+        insert into t_cart(`id`, `user_id`)
+        values (null, #{userId})
+    </insert>
+
+    <!--void updateCountAndPrice(@Param("count") Integer count, @Param("totalPrice") BigDecimal totalPrice,
+                             @Param("bookId") Integer bookId, @Param("cartId") Integer cartId);-->
+    <update id="updateCountAndPrice">
+        update t_cart_item
+        set `count` = #{count},
+            `total_price` = #{totalPrice}
+        where `book_id` = #{bookId}
+        and `cart_id` = #{cartId}
+    </update>
+
+    <!--CartItem selectCartItemByCartIdAndBookId(@Param("bookId") Integer bookId, @Param("cartId") Integer cartId);-->
+    <select id="selectCartItemByCartIdAndBookId" resultType="CartItem">
+        select `id`, `name`, `count`, `price`, `total_price`, `cart_id`, `book_id`
+        from t_cart_item
+        where `cart_id` = #{cartId}
+        and `book_id` = #{bookId}
+    </select>
+
+    <!--void deleteCartItem(@Param("id") Integer id);-->
+    <delete id="deleteCartItem">
+        delete from t_cart_item
+        where `id` = #{id}
+    </delete>
+
+    <!--void cleanCart(@Param("cartId") Integer cartId);-->
+    <delete id="cleanCart">
+        delete from t_cart_item
+        where `cart_id` = #{cartId}
+    </delete>
+
+</mapper>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="header">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script type="text/javascript" th:src="@{/script/jquery-1.7.2.js}"></script>
+</head>
+<body>
+
+    <div id="header">
+        <img class="logo_img" alt="" th:src="@{/img/logo.gif}" >
+        <span class="wel_word"></span>
+        <div>
+            <span>欢迎<span class="um_span">[[${session.user.username}]]</span>光临尚硅谷书城</span>
+            <a th:href="@{/order}">我的订单</a>
+            <a th:href="@{/logout}">注销</a>&nbsp;&nbsp;
+            <a th:href="@{/}">返回</a>
+        </div>
+    </div>
+
+    <div id="manager_header">
+        <a th:href="@{/manager/book/1}">图书管理</a>
+        <a th:href="@{/manager/order}">订单管理</a>
+        <a th:href="@{/}">返回商城</a>
+    </div>
+
+    <div id="bottom">
+        <span>
+            尚硅谷书城.Copyright &copy;2022
+        </span>
+    </div>
+</body>
+</html>

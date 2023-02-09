@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>我的订单</title>
+	<div th:include="~{common :: header}"></div>
+	<style type="text/css">
+		h1 {
+			text-align: center;
+			margin-top: 200px;
+		}
+	</style>
+	<script type="text/javascript">
+
+		$(function () {
+			$(".receive").click(function () {
+				return confirm("确定要收货吗?");
+			})
+		})
+
+	</script>
+</head>
+<body>
+
+	<div th:replace="~{common :: #header}"></div>
+	
+	<div id="main">
+		
+		<table>
+			<tr>
+				<td>日期</td>
+				<td>金额</td>
+				<td>状态</td>
+				<td>详情</td>
+			</tr>
+			<tr th:if="${orders == null}">
+				<td colspan="2">还没有订单</td>
+				<td colspan="2"><a th:href="@{/}" th:text="去浏览图书"></a></td>
+			</tr>
+			<tr th:if="${orders != null}" th:each="order : ${orders}" th:object="${order}">
+				<td th:text="*{createTime}">2015.04.23</td>
+				<td th:text="*{totalMoney}">90.00</td>
+				<td th:if="*{status == 0}">已下单</td>
+				<td th:if="*{status == 1}">
+					已发货<br/>
+					<a class="receive" th:href="@{|/update/status/2/*{orderId}|}">确认收货</a>
+				</td>
+				<td th:if="*{status == 2}">已完成</td>
+				<td><a th:href="@{|/order/detail/user/*{orderId}|}">查看详情</a></td>
+			</tr>
+		</table>
+		
+	
+	</div>
+
+	<div th:replace="~{common::#bottom}"></div>
+</body>
+</html>

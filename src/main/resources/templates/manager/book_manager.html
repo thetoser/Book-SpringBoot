@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>图书管理</title>
+	<div th:include="~{common :: header}"></div>
+	<script type="text/javascript">
+		$(function () {
+			$("a.deleteClass").click(function () {
+				return confirm("你确定要删除【" + $(this).parent().parent().find("td:first").text() + "】?")
+			})
+
+			$(":button").click(function () {
+				var pageNum = $("#pn_input").val();
+				location.href =
+						"http://localhost:8080/manager/book/" + pageNum;
+			})
+		})
+	</script>
+</head>
+<body>
+
+	<div id="header">
+		<img class="logo_img" alt="" th:src="@{/img/logo.gif}" >
+		<span class="wel_word">图书管理系统</span>
+		<div th:replace="~{common :: #manager_header}"></div>
+	</div>
+	
+	<div id="main">
+		<table>
+			<tr>
+				<td>名称</td>
+				<td>价格</td>
+				<td>作者</td>
+				<td>销量</td>
+				<td>库存</td>
+				<td colspan="2">操作</td>
+			</tr>
+			<tr th:each="book : ${session.page.list}" th:object="${book}">
+				<td th:text="*{name}">时间简史</td>
+				<td th:text="*{price}">20.00</td>
+				<td th:text="*{author}">霍金</td>
+				<td th:text="*{sales}">200</td>
+				<td th:text="*{stock}">400</td>
+				<td><a th:href="@{|/book/update/*{id}|}">修改</a></td>
+				<td><a class="deleteClass" th:href="@{|/book/delete/*{id}|}">删除</a></td>
+			</tr>
+			
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td><a th:href="@{/book/add}">添加图书</a></td>
+			</tr>
+		</table>
+
+		<br/>
+		<div id="page_nav" th:object="${session.page}">
+			<span th:if="*{hasPreviousPage}">
+				<a th:href="@{/manager/book/1}">首页</a>
+				<a th:href="@{|/manager/book/*{prePage}|}">上一页</a>
+			</span>
+
+			<span th:each="pageNum : *{navigatepageNums}">
+            <a th:if="${pageNum != session.page.pageNum}"
+			   th:href="@{|/manager/book/${pageNum}|}"
+			   th:text="${pageNum}">
+            </a>
+            <a th:if="${pageNum == session.page.pageNum}"
+			   th:href="@{|/manager/book/${pageNum}|}"
+			   th:text="|【${pageNum}】|">
+            </a>
+			</span>
+
+			<span th:if="*{hasNextPage}">
+			<a th:href="@{|/manager/book/*{nextPage}|}">下一页</a>
+			<a th:href="@{|/manager/book/*{pages}|}">末页</a>
+			</span>
+			共[[*{pages}]]页，[[*{total}]]条记录 到第<input name="pn" id="pn_input"/>页
+			<input type="button" value="确定">
+		</div>
+	</div>
+
+	<div th:replace="~{common::#bottom}"></div>
+</body>
+</html>

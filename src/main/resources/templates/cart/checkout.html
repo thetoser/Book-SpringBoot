@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>结算页面</title>
+	<div th:include="~{common :: header}"></div>
+<style type="text/css">
+	h1 {
+		text-align: center;
+		margin-top: 200px;
+	}
+</style>
+</head>
+<body>
+
+	<div th:replace="~{common :: #header}"></div>
+	
+	<div id="main">
+		
+		<h1>你的订单已结算，订单号为[[${session.orderId}]]</h1>
+
+	</div>
+
+	<div th:replace="~{common::#bottom}"></div>
+</body>
+</html>

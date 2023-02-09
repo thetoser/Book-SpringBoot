@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhljava.bookspringboot.mapper.BookMapper">
+
+    <!--List<Book> selectBookForList();-->
+    <select id="selectBookForList" resultType="Book">
+        select `id`, `name`, `author`, `price`, `sales`, `stock`
+        from t_book
+    </select>
+
+    <!--void insertBook(@Param("book") Book book);-->
+    <insert id="insertBook">
+        insert into t_book(`id`, `name`, `author`, `price`, `sales`, `stock`, `img_path`)
+        values (null, #{book.name}, #{book.author}, #{book.price}, #{book.sales}, #{book.stock}, #{book.imgPath})
+    </insert>
+
+    <!--void updateBook(@Param("book") Book book);-->
+    <update id="updateBook">
+        update t_book
+        set `name`   = #{book.name},
+            `author` = #{book.author},
+            `price`  = #{book.price},
+            `sales`  = #{book.sales},
+            `stock`  = #{book.stock}
+        where `id` = #{book.id}
+    </update>
+
+    <!--void deleteBook(@Param("id") Integer id);-->
+    <delete id="deleteBook">
+        delete
+        from t_book
+        where `id` = #{id}
+    </delete>
+
+    <!--Book selectBookById(@Param("id") Integer id);-->
+    <select id="selectBookById" resultType="Book">
+        select `id`, `name`, `author`, `price`, `sales`, `stock`
+        from t_book
+        where `id` = #{id}
+    </select>
+
+    <!--List<Book> selectBookForScope(@Param("min") Integer min,@Param("max") Integer max);-->
+    <select id="selectBookForScope" resultType="Book">
+        select `id`, `name`, `author`, `price`, `sales`, `stock`
+        from t_book
+        where `price` between #{min} and #{max}
+    </select>
+
+</mapper>

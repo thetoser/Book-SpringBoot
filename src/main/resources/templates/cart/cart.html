@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>购物车</title>
+	<div th:include="~{common :: header}"></div>
+	<script type="text/javascript">
+		$(function () {
+			$(".del").click(function () {
+				return confirm("你确定要删除【" + $(this).parent().parent().find("td:first").text() + "】?")
+			})
+
+			$("#clean_cart").click(function () {
+				return confirm("你确定要清空购物车吗?")
+			})
+
+			$("#create_order").click(function () {
+				return confirm("你确定要结账吗?")
+			})
+
+			$(".update_count").change(function () {
+				var isConfirm = confirm("你确定要将【" + $(this).parent().parent().find("td:first").text() +
+						"】数量修改为：" + this.value + "吗?");
+				if (isConfirm) {
+					location.href = "http://localhost:8080/cart/update/" + this.value
+							 + "/" + $(this).attr("bookId");
+				} else {
+					this.value = this.defaultValue;
+				}
+			})
+		})
+	</script>
+</head>
+<body>
+
+	<div th:replace="~{common :: #header}"></div>
+	
+	<div id="main">
+	
+		<table>
+			<tr>
+				<td>商品名称</td>
+				<td>数量</td>
+				<td>单价</td>
+				<td>金额</td>
+				<td>操作</td>
+			</tr>
+			<tr th:if="${cartItems == null}">
+				<td colspan="3">还没有添加图书</td>
+				<td colspan="2"><a th:href="@{/}">去浏览图书</a></td>
+			</tr>
+			<tr th:if="${cartItems != null}" th:each="cartItem : ${cartItems}" th:object="${cartItem}">
+				<td th:text="*{name}">时间简史</td>
+				<td><input class="update_count" th:bookId="*{bookId}"
+						   style="text-align: center; width: 50px" type="text"
+						   th:value="*{count}"/></td>
+				<td th:text="*{price}">30.00</td>
+				<td th:text="*{totalPrice}">60.00</td>
+				<td><a class="del" th:href="@{|/cart/delete/*{id}|}">删除</a></td>
+			</tr>
+		</table>
+		
+		<div class="cart_info" th:if="${cartItems != null}">
+			<span class="cart_span">购物车中共有<span class="b_count" th:text="${session.count}">4</span>件商品</span>
+			<span class="cart_span">总金额<span class="b_price" th:text="${session.totalPrice}">90.00</span>元</span>
+			<span class="cart_span"><a id="clean_cart" th:href="@{/cart/clean}">清空购物车</a></span>
+			<span class="cart_span"><a id="create_order" th:href="@{/create/order}">去结账</a></span>
+		</div>
+	
+	</div>
+
+	<div th:replace="~{common::#bottom}"></div>
+</body>
+</html>

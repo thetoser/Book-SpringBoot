@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>书城首页</title>
+	<div th:include="~{common :: header}"></div>
+	<script type="text/javascript">
+		$(function () {
+			$("#page_button").click(function () {
+				var pageNum = $("#pn_input").val();
+				location.href =
+						"http://localhost:8080/index/book/" + pageNum;
+			})
+
+			/*$(".cart_button").click(function () {
+				var bookId = $(this).parent().find(":hidden")[0].val();
+				location.href =
+						"http://localhost:8080/cart/add/" + bookId;
+			})*/
+		})
+	</script>
+</head>
+<body>
+	
+	<div id="header">
+		<img class="logo_img" alt="" th:src="@{/img/logo.gif}" >
+		<span class="wel_word">网上书城</span>
+		<div>
+			<span th:if="${session.user == null}">
+				<a th:href="@{/user/login}">登录</a> |
+				<a th:href="@{/user/register}">注册</a>
+			</span>
+			<span th:if="${session.user != null}">
+				<span>欢迎<span class="um_span">[[${session.user.username}]]</span>光临尚硅谷书城</span>
+				<a th:href="@{/order}">我的订单</a>
+				<a th:href="@{/logout}">注销</a>
+			</span>
+			 &nbsp;&nbsp;
+			<a th:href="@{/cart}">购物车</a>
+			<a th:href="@{/manager}">后台管理</a>
+		</div>
+	</div>
+	<div id="main">
+		<div id="book">
+			<div class="book_cond">
+				<form th:action="@{/index/book/1}" method="get">
+					价格：<input id="min" type="text" name="minPage" th:value="${session.min}"> 元 -
+						<input id="max" type="text" name="maxPage" th:value="${session.max}"> 元
+						<input type="submit" value="查询" />
+				</form>
+			</div>
+			<div style="text-align: center">
+				<span>您的购物车中有[[${session.count}]]件商品</span>
+				<div th:if="${session.bookName != null}">
+					您刚刚将<span style="color: red" th:text="${session.bookName}"></span>加入到了购物车中
+				</div>
+			</div>
+			<div class="b_list" th:each="book : ${page.list}" th:object="${book}">
+				<div class="img_div">
+					<img class="book_img" alt="" th:src="@{/img/default.jpg}" />
+				</div>
+				<div class="book_info">
+					<div class="book_name">
+						<span class="sp1">书名:</span>
+						<span class="sp2" th:text="*{name}">时间简史</span>
+					</div>
+					<div class="book_author">
+						<span class="sp1">作者:</span>
+						<span class="sp2" th:text="*{author}">霍金</span>
+					</div>
+					<div class="book_price">
+						<span class="sp1">价格:</span>
+						<span class="sp2" th:text="*{price}">￥30.00</span>
+					</div>
+					<div class="book_sales">
+						<span class="sp1">销量:</span>
+						<span class="sp2" th:text="*{sales}">230</span>
+					</div>
+					<div class="book_amount">
+						<span class="sp1">库存:</span>
+						<span class="sp2" th:text="*{stock}">1000</span>
+					</div>
+					<div class="book_add">
+						<a th:if="${page != null}" th:href="@{|/cart/add/*{id}/${page.pageNum}|}">加入购物车</a>
+						<a th:if="${page == null}" th:href="@{|/cart/add/*{id}/1|}">加入购物车</a>
+						<!--<input type="hidden" th:value="*{id}">-->
+						<!--<button class="cart_button">加入购物车</button>-->
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div id="page_nav" th:object="${page}">
+			<span th:if="*{hasPreviousPage}">
+				<a th:href="@{/index/book/1}">首页</a>
+				<a th:href="@{|/index/book/*{prePage}|}">上一页</a>
+			</span>
+
+			<span th:each="pageNum : *{navigatepageNums}">
+				<a th:if="${pageNum != page.pageNum}"
+				   th:href="@{|/index/book/${pageNum}|}"
+				   th:text="${pageNum}">
+				</a>
+				<a th:if="${pageNum == page.pageNum}"
+				   th:href="@{|/index/book/${pageNum}|}"
+				   th:text="|【${pageNum}】|">
+				</a>
+			</span>
+
+			<span th:if="*{hasNextPage}">
+			<a th:href="@{|/index/book/*{nextPage}|}">下一页</a>
+			<a th:href="@{|/index/book/*{pages}|}">末页</a>
+			</span>
+			共[[*{pages}]]页，[[*{total}]]条记录 到第<input name="pn" id="pn_input"/>页
+			<input id="page_button" type="button" value="确定">
+		</div>
+	
+	</div>
+
+	<div th:replace="~{common :: #bottom}"></div>
+</body>
+</html>
